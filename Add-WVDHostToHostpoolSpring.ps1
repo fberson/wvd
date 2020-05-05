@@ -35,8 +35,7 @@ $servicePrincipalPassword = $args[3]
 $azureADTenantID =  $args[4]
 $resourceGroupName = $args[5]
 $azureSubscriptionID = $args[6]
-$customScriptExtensionVersion = $args[7]
-$Drainmode = $args[8]
+$Drainmode = $args[7]
 
 #Set Variables
 $WVDAgentInstaller = "C:\Packages\Plugins\WVD-Agent.msi"

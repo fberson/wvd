@@ -4,6 +4,7 @@ Param
     [object]$inputJson,
     [string]$existingWVDWorkspaceName,
     [string]$existingWVDHostPoolName,
+    [string]$existingWVDAPpGroupName,
     [string]$servicePrincipalApplicationID,
     [string]$servicePrincipalPassword,
     [string]$azureADTenantID,

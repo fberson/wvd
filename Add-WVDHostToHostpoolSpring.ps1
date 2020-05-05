@@ -8,7 +8,7 @@
     - Install the WVD Agent, using the provided hostpoolRegistrationToken
     - Install the WVD Boot Loader
     - Set the WVD Host into drain mode (optionally)
-    The script is designed and optimized to run as PowerShell Extentsion as part of a JSON deployment.
+    The script is designed and optimized to run as PowerShell Extension as part of a JSON deployment.
 .NOTES  
     File Name  : Add-WVDHostToHostpool.ps1
     Author     : Freek Berson - Wortell - RDSGurus
@@ -30,12 +30,13 @@
 #Get Parameters
 $existingWVDWorkspaceName = $args[0]
 $existingWVDHostPoolName = $args[1]
-$servicePrincipalApplicationID = $args[2]
-$servicePrincipalPassword = $args[3]
-$azureADTenantID =  $args[4]
-$resourceGroupName = $args[5]
-$azureSubscriptionID = $args[6]
-$Drainmode = $args[7]
+$existingWVDAppGroupName = $args[2]
+$servicePrincipalApplicationID = $args[3]
+$servicePrincipalPassword = $args[4]
+$azureADTenantID =  $args[5]
+$resourceGroupName = $args[6]
+$azureSubscriptionID = $args[7]
+$Drainmode = $args[8]
 
 #Set Variables
 $WVDAgentInstaller = "C:\Packages\Plugins\WVD-Agent.msi"
@@ -97,5 +98,8 @@ if ($Drainmode -eq "Yes")
     $CurrentHostName = [System.Net.Dns]::GetHostByName($env:computerName).hostname
     Update-AzWvdSessionHost -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -HostPoolName $existingWVDHostPoolName -Name $CurrentHostName -AllowNewSession:$false
 }
+
+#Create AppGroup Association
+Update-AzWvdWorkspace -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -Name $existingWVDWorkspaceName -ApplicationGroupReference (Get-AzWvdApplicationGroup -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -Name $existingWVDAppGroupName | select id).id
 
 Log "Finished"

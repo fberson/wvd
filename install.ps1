@@ -1,7 +1,15 @@
 Param
 (
     [Parameter (Mandatory = $false)]
-    [object]$inputJson
+    [object]$inputJson,
+    [string]$existingWVDWorkspaceName,
+    [string]$existingWVDHostPoolName,
+    [string]$servicePrincipalApplicationID,
+    [string]$servicePrincipalPassword,
+    [string]$azureADTenantID,
+    [string]$resourceGroupName,
+    [string]$azureSubscriptionID,
+    [string]$Drainmode
 )
 #
 #$inputJson = @"
@@ -56,7 +64,7 @@ if ($json.installSecureBaselineLGPO.active -eq "yes")
 if ($json.configureAsWVDManagementServer.active -eq "yes")
 {
     Write-Log -logText "Confirguring as WVD Management Server"
-    . .\Add-WVDHostToHostpoolSpring.ps1 $args[1] $args[2] $args[3] $args[4] $args[5] $args[6] $args[7] $args[8]
+    . .\Add-WVDHostToHostpoolSpring.ps1 $existingWVDWorkspaceName $existingWVDHostPoolName $servicePrincipalApplicationID $servicePrincipalPassword $azureADTenantID $resourceGroupName $azureSubscriptionID $Drainmode
 }
 
 

@@ -58,6 +58,17 @@ function log
    "`n`n$(get-date -f o)  $message" 
 }
 
+log $existingWVDWorkspaceName
+log $existingWVDHostPoolName
+log $existingWVDAppGroupName
+log $servicePrincipalApplicationID
+log $servicePrincipalPassword
+log $azureADTenantID
+log $resourceGroupName
+log $azureSubscriptionID
+log $drainmode
+log $createWorkspaceAppGroupAsso
+
 #Create ServicePrincipal Credential
 log "Creating credentials"
 $ServicePrincipalCreds = New-Object System.Management.Automation.PSCredential($servicePrincipalApplicationID, (ConvertTo-SecureString $servicePrincipalPassword -AsPlainText -Force))

@@ -36,7 +36,8 @@ $servicePrincipalPassword = $args[4]
 $azureADTenantID =  $args[5]
 $resourceGroupName = $args[6]
 $azureSubscriptionID = $args[7]
-$Drainmode = $args[8]
+$drainmode = $args[8]
+$createWorkspaceAppGroupAsso = $args[9]
 
 #Set Variables
 $WVDAgentInstaller = "C:\Packages\Plugins\WVD-Agent.msi"
@@ -92,14 +93,17 @@ Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $WVDBootLoaderInstaller"
 Start-sleep 60
 
 #Set WVD Session Host in drain mode
-if ($Drainmode -eq "Yes")
+if ($drainmode -eq "Yes")
 {
     Log "Set WVD Session Host in drain mode"
     $CurrentHostName = [System.Net.Dns]::GetHostByName($env:computerName).hostname
     Update-AzWvdSessionHost -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -HostPoolName $existingWVDHostPoolName -Name $CurrentHostName -AllowNewSession:$false
 }
 
-#Create AppGroup Association
-Update-AzWvdWorkspace -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -Name $existingWVDWorkspaceName -ApplicationGroupReference (Get-AzWvdApplicationGroup -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -Name $existingWVDAppGroupName | select id).id
+#Create Workspace-AppGroup Association
+if ($createWorkspaceAppGroupAsso -eq "Yes")
+{
+    Update-AzWvdWorkspace -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -Name $existingWVDWorkspaceName -ApplicationGroupReference (Get-AzWvdApplicationGroup -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -Name $existingWVDAppGroupName | select id).id
+}
 
 Log "Finished"

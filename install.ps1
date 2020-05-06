@@ -66,7 +66,7 @@ if ($json.installSecureBaselineLGPO.active -eq "yes")
 if ($json.configureAsWVDManagementServer.active -eq "yes")
 {
     Write-Log -logText "Confirguring as WVD Management Server"
-    . .\Add-WVDHostToHostpoolSpring.ps1 $existingWVDWorkspaceName $existingWVDHostPoolName $servicePrincipalApplicationID $servicePrincipalPassword $azureADTenantID $resourceGroupName $azureSubscriptionID $Drainmode $createWorkspaceAppGroupAsso
+    . .\Add-WVDHostToHostpoolSpring.ps1 $existingWVDWorkspaceName $existingWVDHostPoolName $existingWVDAPpGroupName $servicePrincipalApplicationID $servicePrincipalPassword $azureADTenantID $resourceGroupName $azureSubscriptionID $Drainmode $createWorkspaceAppGroupAsso
 }
 
 

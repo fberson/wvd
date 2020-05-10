@@ -89,18 +89,17 @@ Log "Install the Boot Loader"
 Invoke-WebRequest -Uri $WVDBootLoaderDownkloadURL -OutFile $WVDBootLoaderInstaller
 Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $WVDBootLoaderInstaller", "/quiet", "/qn", "/norestart", "/passive", "/l* C:\Users\AgentBootLoaderInstall.txt" | Wait-process
 
-#Wait 1 minute to let the WVD host register before configuring Drain mode
-Start-sleep 60
-
-#Set WVD Session Host in drain mode
+#Optionally set WVD Session Host in drain mode
 if ($drainmode -eq "Yes")
 {
+    #Wait 1 minute to let the WVD host register before configuring Drain mode
+    Start-sleep 60
     Log "Set WVD Session Host in drain mode"
     $CurrentHostName = [System.Net.Dns]::GetHostByName($env:computerName).hostname
     Update-AzWvdSessionHost -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -HostPoolName $existingWVDHostPoolName -Name $CurrentHostName -AllowNewSession:$false
 }
 
-#Create Workspace-AppGroup Association
+#Optionally create Workspace-AppGroup Association
 if ($createWorkspaceAppGroupAsso -eq "Yes")
 {
     Update-AzWvdWorkspace -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -Name $existingWVDWorkspaceName -ApplicationGroupReference (Get-AzWvdApplicationGroup -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -Name $existingWVDAppGroupName | select id).id

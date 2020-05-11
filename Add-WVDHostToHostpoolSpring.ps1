@@ -66,7 +66,7 @@ $ServicePrincipalCreds = New-Object System.Management.Automation.PSCredential($s
 $WVDAgentDownkloadURL = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv"
 $WVDBootLoaderDownkloadURL = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH"
 
-#Authenticatie against the WVD Tenant
+#Authenticate against the WVD Tenant
 log "Authenticatie against the WVD Tenant"
 Connect-AzAccount -ServicePrincipal -Credential $ServicePrincipalCreds  -Tenant $azureADTenantID
 

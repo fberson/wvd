@@ -44,7 +44,6 @@ $createWorkspaceAppGroupAsso = $args[9]
 $RootFolder = "C:\Packages\Plugins\"
 $WVDAgentInstaller = $RootFolder+"WVD-Agent.msi"
 $WVDBootLoaderInstaller = $RootFolder+"WVD-BootLoader.msi"
-$RDBrokerURL = "https://rdbroker.wvd.microsoft.com"
 
 #Create Folder structure
 if (!(Test-Path -Path $RootFolder)){New-Item -Path $RootFolder -ItemType Directory}

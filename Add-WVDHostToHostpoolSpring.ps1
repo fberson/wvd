@@ -12,7 +12,7 @@
 .NOTES  
     File Name  : Add-WVDHostToHostpool.ps1
     Author     : Freek Berson - Wortell - RDSGurus
-    Version    : v1
+    Version    : v1.3.1
 .EXAMPLE
     .\Add-WVDHostToHostpool.ps1 existingWVDWorkspaceName existingWVDHostPoolName `
       servicePrincipalApplicationID servicePrincipalPassword azureADTenantID resourceGroupName `
@@ -40,9 +40,13 @@ $drainmode = $args[8]
 $createWorkspaceAppGroupAsso = $args[9]
 
 #Set Variables
-$WVDAgentInstaller = "C:\Packages\Plugins\WVD-Agent.msi"
-$WVDBootLoaderInstaller = "C:\Packages\Plugins\WVD-BootLoader.msi"
+$RootFolder = "C:\Packages\Plugins\"
+$WVDAgentInstaller = $RootFolder+"WVD-Agent.msi"
+$WVDBootLoaderInstaller = $RootFolder+"WVD-BootLoader.msi"
 $RDBrokerURL = "https://rdbroker.wvd.microsoft.com"
+
+#Create Folder structure
+if (!(Test-Path -Path $RootFolder)){New-Item -Path $RootFolder -ItemType Directory}
 
 #Download and Import Modules
 install-packageProvider -Name NuGet -MinimumVErsion 2.8.5.201 -force
@@ -66,7 +70,7 @@ $ServicePrincipalCreds = New-Object System.Management.Automation.PSCredential($s
 $WVDAgentDownkloadURL = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv"
 $WVDBootLoaderDownkloadURL = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH"
 
-#Authenticate against the WVD Tenant
+#Authenticatie against the WVD Tenant
 log "Authenticatie against the WVD Tenant"
 Connect-AzAccount -ServicePrincipal -Credential $ServicePrincipalCreds  -Tenant $azureADTenantID
 
@@ -89,7 +93,7 @@ Log "Install the Boot Loader"
 Invoke-WebRequest -Uri $WVDBootLoaderDownkloadURL -OutFile $WVDBootLoaderInstaller
 Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $WVDBootLoaderInstaller", "/quiet", "/qn", "/norestart", "/passive", "/l* C:\Users\AgentBootLoaderInstall.txt" | Wait-process
 
-#Optionally set WVD Session Host in drain mode
+#Set WVD Session Host in drain mode
 if ($drainmode -eq "Yes")
 {
     #Wait 1 minute to let the WVD host register before configuring Drain mode
@@ -99,7 +103,7 @@ if ($drainmode -eq "Yes")
     Update-AzWvdSessionHost -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -HostPoolName $existingWVDHostPoolName -Name $CurrentHostName -AllowNewSession:$false
 }
 
-#Optionally create Workspace-AppGroup Association
+#Create Workspace-AppGroup Association
 if ($createWorkspaceAppGroupAsso -eq "Yes")
 {
     Update-AzWvdWorkspace -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -Name $existingWVDWorkspaceName -ApplicationGroupReference (Get-AzWvdApplicationGroup -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -Name $existingWVDAppGroupName | select id).id

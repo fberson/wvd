@@ -8,11 +8,12 @@
     - Install the WVD Agent, using the provided hostpoolRegistrationToken
     - Install the WVD Boot Loader
     - Set the WVD Host into drain mode (optionally)
+    - Create the Workspace <-> App Group Association (optionally)
     The script is designed and optimized to run as PowerShell Extension as part of a JSON deployment.
 .NOTES  
     File Name  : Add-WVDHostToHostpool.ps1
     Author     : Freek Berson - Wortell - RDSGurus
-    Version    : v1.3.1
+    Version    : v1.3.2
 .EXAMPLE
     .\Add-WVDHostToHostpool.ps1 existingWVDWorkspaceName existingWVDHostPoolName `
       servicePrincipalApplicationID servicePrincipalPassword azureADTenantID resourceGroupName `

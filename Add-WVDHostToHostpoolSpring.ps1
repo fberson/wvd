@@ -77,7 +77,9 @@ Connect-AzAccount -ServicePrincipal -Credential $ServicePrincipalCreds  -Tenant 
 #Obtain RdsRegistrationInfotoken
 log "Obtain RdsRegistrationInfotoken"
 $Registered = Get-AzWvdRegistrationInfo -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -HostPoolName $existingWVDHostPoolName
-if (-Not $Registered.Token)
+$registrationTokenValidFor = (NEW-TIMESPAN –Start (get-date) –End $Registered.ExpirationTime | select Days,Hours,Minutes,Seconds)
+log "Token is valid for:$registrationTokenValidFor"
+if ((-Not $Registered.Token) -or ($registrationTokenExpirationTime.ExpirationTime -le (get-date)))
 {
     $Registered = New-AzWvdRegistrationInfo -SubscriptionId $azureSubscriptionID -ResourceGroupName $resourceGroupName -HostPoolName $existingWVDHostPoolName -ExpirationTime (Get-Date).AddHours(4) -ErrorAction SilentlyContinue
 }

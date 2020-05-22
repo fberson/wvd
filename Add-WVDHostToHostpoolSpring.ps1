@@ -11,13 +11,13 @@
     - Create the Workspace <-> App Group Association (optionally)
     The script is designed and optimized to run as PowerShell Extension as part of a JSON deployment.
 .NOTES  
-    File Name  : Add-WVDHostToHostpool.ps1
+    File Name  : dd-WVDHostToHostpoolSpring.ps1
     Author     : Freek Berson - Wortell - RDSGurus
     Version    : v1.3.2
 .EXAMPLE
     .\Add-WVDHostToHostpool.ps1 existingWVDWorkspaceName existingWVDHostPoolName `
-      servicePrincipalApplicationID servicePrincipalPassword azureADTenantID resourceGroupName `
-      azureSubscriptionID Drainmode >> logdir\logfile.log
+      existingWVDAppGroupName servicePrincipalApplicationID servicePrincipalPassword azureADTenantID 
+      resourceGroupName azureSubscriptionID Drainmode createWorkspaceAppGroupAsso >> <yourlogdir>\dd-WVDHostToHostpoolSpring.log
 .DISCLAIMER
     Use at your own risk. This scripts are provided AS IS without warranty of any kind. The author further disclaims all implied
     warranties including, without limitation, any implied warranties of merchantability or of fitness for a particular purpose. The entire risk

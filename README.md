@@ -10,7 +10,7 @@ products:
   - windows-virtual-desktop
 ---
 
-# WVD :- Windows Virtual Desktop
+#  Windows Virtual Desktop (WVD) - resources and scripts
 
 
 ## Contents

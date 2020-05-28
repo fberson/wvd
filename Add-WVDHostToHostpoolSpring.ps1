@@ -13,7 +13,7 @@
 .NOTES  
     File Name  : dd-WVDHostToHostpoolSpring.ps1
     Author     : Freek Berson - Wortell - RDSGurus
-    Version    : v1.3.4
+    Version    : v1.3.5
 .EXAMPLE
     .\Add-WVDHostToHostpool.ps1 existingWVDWorkspaceName existingWVDHostPoolName `
       existingWVDAppGroupName servicePrincipalApplicationID servicePrincipalPassword azureADTenantID 
@@ -77,7 +77,7 @@ Connect-AzAccount -ServicePrincipal -Credential $ServicePrincipalCreds  -Tenant 
 #Obtain RdsRegistrationInfotoken
 log "Obtain RdsRegistrationInfotoken"
 $Registered = Get-AzWvdRegistrationInfo -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -HostPoolName $existingWVDHostPoolName
-if (-not(-Not $Registered.Token)){$registrationTokenValidFor = (NEW-TIMESPAN –Start (get-date) –End $Registered.ExpirationTime | select Days,Hours,Minutes,Seconds)}
+if (-not(-Not $Registered.Token)){$registrationTokenValidFor = (NEW-TIMESPAN -Start (get-date) -End $Registered.ExpirationTime | select Days,Hours,Minutes,Seconds)}
 log "Token is valid for:$registrationTokenValidFor"
 if ((-Not $Registered.Token) -or ($registrationTokenExpirationTime.ExpirationTime -le (get-date)))
 {

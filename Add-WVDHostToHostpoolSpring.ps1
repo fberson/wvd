@@ -88,12 +88,12 @@ $RdsRegistrationInfotoken = $Registered.Token
 #Install the WVD Agent
 Log "Install the WVD Agent"
 Invoke-WebRequest -Uri $WVDAgentDownkloadURL -OutFile $WVDAgentInstaller
-Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $WVDAgentInstaller", "/quiet", "/qn", "/norestart", "/passive", "REGISTRATIONTOKEN=$RdsRegistrationInfotoken", "/l* C:\Users\AgentInstall.txt" | Wait-process
+Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $WVDAgentInstaller", "/quiet", "/qn", "/norestart", "/passive", "REGISTRATIONTOKEN=$RdsRegistrationInfotoken", "/l* C:\Users\AgentInstall.txt" -Wait
 
 #Install the WVD Bootloader
 Log "Install the Boot Loader"
 Invoke-WebRequest -Uri $WVDBootLoaderDownkloadURL -OutFile $WVDBootLoaderInstaller
-Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $WVDBootLoaderInstaller", "/quiet", "/qn", "/norestart", "/passive", "/l* C:\Users\AgentBootLoaderInstall.txt" | Wait-process
+Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $WVDBootLoaderInstaller", "/quiet", "/qn", "/norestart", "/passive", "/l* C:\Users\AgentBootLoaderInstall.txt" -Wait
 
 #Set WVD Session Host in drain mode
 if ($drainmode -eq "Yes")

@@ -77,8 +77,6 @@ try
     Install-PackageProvider NuGet -MinimumVersion 2.8.5.201 -Force -ErrorAction Stop
     log "Installing Az.DesktopVirtualization"
     Install-Module -Name Az.DesktopVirtualization -Force -ErrorAction Stop
-    log "Set-ExecutionPolicy"
-    Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -ErrorAction SilentlyContinue
     log "Import-Module"
     Import-Module -Name Az.DesktopVirtualization -ErrorAction Stop
 }

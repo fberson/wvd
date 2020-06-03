@@ -49,10 +49,18 @@ $WVDBootLoaderInstaller = $RootFolder+"WVD-BootLoader.msi"
 if (!(Test-Path -Path $RootFolder)){New-Item -Path $RootFolder -ItemType Directory}
 
 #Download and Import Modules
-install-packageProvider -Name NuGet -MinimumVErsion 2.8.5.201 -force
-Install-Module -Name Az.DesktopVirtualization -AllowClobber -Force
-Set-ExecutionPolicy -ExecutionPolicy Bypass -force
-Import-Module -Name Az.DesktopVirtualization
+try
+{
+    log "Installing / importing modules"
+    #Install-PackageProvider NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser
+    Install-Module -Name Az.DesktopVirtualization -Force -Scope CurrentUser
+    Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope CurrentUser
+    Import-Module -Name Az.DesktopVirtualization
+}
+catch
+{
+    log "[ERROR] - $($_.Exception.Message)"
+}
 
 
 #Configure logging

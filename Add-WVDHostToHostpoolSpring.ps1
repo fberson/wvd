@@ -66,7 +66,7 @@ if (!(Test-Path -Path $RootFolder))
 try
 {
     log "Installing / importing modules"
-    #Install-PackageProvider NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser
+    Install-PackageProvider NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser
     Install-Module -Name Az.DesktopVirtualization -Force -Scope CurrentUser
     Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope CurrentUser
     Import-Module -Name Az.DesktopVirtualization

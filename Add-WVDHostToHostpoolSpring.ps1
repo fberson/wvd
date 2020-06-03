@@ -62,10 +62,18 @@ if (!(Test-Path -Path $RootFolder))
     New-Item -Path $RootFolder -ItemType Directory
 }
 
+#Configure logging
+function log
+{
+    param([string]$message)
+    "`n`n$(get-date -f o)  $message" 
+}
+
 #Download and Import Modules
 try
 {
     log "Installing / importing modules"
+    $ErrorActionPreference = "Stop"
     Install-PackageProvider NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser
     Install-Module -Name Az.DesktopVirtualization -Force -Scope CurrentUser
     Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope CurrentUser
@@ -74,14 +82,6 @@ try
 catch
 {
     log "[ERROR] - $($_.Exception.Message)"
-}
-
-
-#Configure logging
-function log
-{
-    param([string]$message)
-    "`n`n$(get-date -f o)  $message" 
 }
 
 #Create ServicePrincipal Credential

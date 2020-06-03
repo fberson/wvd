@@ -98,11 +98,18 @@ Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $WVDBootLoaderInstaller"
 #Set WVD Session Host in drain mode
 if ($drainmode -eq "Yes")
 {
-    #Wait 1 minute to let the WVD host register before configuring Drain mode
-    Start-sleep 60
-    Log "Set WVD Session Host in drain mode"
-    $CurrentHostName = [System.Net.Dns]::GetHostByName($env:computerName).hostname
-    Update-AzWvdSessionHost -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -HostPoolName $existingWVDHostPoolName -Name $CurrentHostName -AllowNewSession:$false
+    try
+    {
+        #Wait 1 minute to let the WVD host register before configuring Drain mode
+        Start-sleep 60
+        Log "Set WVD Session Host in drain mode"
+        $CurrentHostName = [System.Net.Dns]::GetHostByName($env:computerName).hostname
+        Update-AzWvdSessionHost -SubscriptionId "$azureSubscriptionId" -ResourceGroupName "$resourceGroupName" -HostPoolName $existingWVDHostPoolName -Name $CurrentHostName -AllowNewSession:$false
+    }
+    catch
+    {
+        log "[ERROR] - $($_.Exception.Message)"
+    }
 }
 
 #Create Workspace-AppGroup Association

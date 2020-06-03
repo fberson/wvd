@@ -13,7 +13,7 @@
 .NOTES  
     File Name  : dd-WVDHostToHostpoolSpring.ps1
     Author     : Freek Berson - Wortell - RDSGurus
-    Version    : v1.3.5
+    Version    : v1.3.6
 .EXAMPLE
     .\Add-WVDHostToHostpool.ps1 existingWVDWorkspaceName existingWVDHostPoolName `
       existingWVDAppGroupName servicePrincipalApplicationID servicePrincipalPassword azureADTenantID 
@@ -108,7 +108,15 @@ if ($drainmode -eq "Yes")
 #Create Workspace-AppGroup Association
 if ($createWorkspaceAppGroupAsso -eq "Yes")
 {
-    Update-AzWvdWorkspace -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -Name $existingWVDWorkspaceName -ApplicationGroupReference (Get-AzWvdApplicationGroup -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -Name $existingWVDAppGroupName | select id).id
+    try
+    {
+        log "Create Workspace-AppGroup Association"
+        Update-AzWvdWorkspace -SubscriptionId "$azureSubscriptionId" -ResourceGroupName "$resourceGroupName" -Name $existingWVDWorkspaceName -ApplicationGroupReference (Get-AzWvdApplicationGroup -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -Name $existingWVDAppGroupName | Select-Object id).id
+    }
+    catch
+    {
+        log "[ERROR] - $($_.Exception.Message)"
+    }
 }
 
 Log "Finished"

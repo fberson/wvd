@@ -70,9 +70,16 @@ $ServicePrincipalCreds = New-Object System.Management.Automation.PSCredential($s
 $WVDAgentDownkloadURL = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv"
 $WVDBootLoaderDownkloadURL = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH"
 
-#Authenticatie against the WVD Tenant
-log "Authenticatie against the WVD Tenant"
-Connect-AzAccount -ServicePrincipal -Credential $ServicePrincipalCreds  -Tenant $azureADTenantID
+#Authentication against the WVD Tenant
+log "Authentication against the WVD Tenant"
+try
+{
+    Connect-AzAccount -ServicePrincipal -Credential $servicePrincipalCreds -Tenant $azureADTenantId
+}
+catch
+{
+    log "[ERROR] - $($_.Exception.Message)"
+}
 
 #Obtain RdsRegistrationInfotoken
 try

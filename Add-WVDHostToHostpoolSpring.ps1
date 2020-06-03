@@ -15,9 +15,9 @@
     Author     : Freek Berson - Wortell - RDSGurus
     Version    : v1.3.6
 .EXAMPLE
-    .\Add-WVDHostToHostpool.ps1 existingWVDWorkspaceName existingWVDHostPoolName `
-      existingWVDAppGroupName servicePrincipalApplicationID servicePrincipalPassword azureADTenantID 
-      resourceGroupName azureSubscriptionID Drainmode createWorkspaceAppGroupAsso >> <yourlogdir>\dd-WVDHostToHostpoolSpring.log
+    .\Add-WVDHostToHostpool.ps1 -existingWVDWorkspaceName existingWVDWorkspaceName -existingWVDHostPoolName existingWVDHostPoolName `
+      -existingWVDAppGroupName existingWVDAppGroupName -servicePrincipalApplicationId servicePrincipalApplicationId -servicePrincipalPassword servicePrincipalPassword -azureADTenantId azureADTenantId 
+      -resourceGroupName resourceGroupName -azureSubscriptionId azureSubscriptionId -drainmode "Yes" -createWorkspaceAppGroupAsso createWorkspaceAppGroupAsso >> <yourlogdir>\dd-WVDHostToHostpoolSpring.log
 .DISCLAIMER
     Use at your own risk. This scripts are provided AS IS without warranty of any kind. The author further disclaims all implied
     warranties including, without limitation, any implied warranties of merchantability or of fitness for a particular purpose. The entire risk

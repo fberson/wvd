@@ -75,13 +75,35 @@ log "Authenticatie against the WVD Tenant"
 Connect-AzAccount -ServicePrincipal -Credential $ServicePrincipalCreds  -Tenant $azureADTenantID
 
 #Obtain RdsRegistrationInfotoken
-log "Obtain RdsRegistrationInfotoken"
-$Registered = Get-AzWvdRegistrationInfo -SubscriptionId "$azureSubscriptionID" -ResourceGroupName "$resourceGroupName" -HostPoolName $existingWVDHostPoolName
-if (-not(-Not $Registered.Token)){$registrationTokenValidFor = (NEW-TIMESPAN -Start (get-date) -End $Registered.ExpirationTime | select Days,Hours,Minutes,Seconds)}
-log "Token is valid for:$registrationTokenValidFor"
-if ((-Not $Registered.Token) -or ($registrationTokenExpirationTime.ExpirationTime -le (get-date)))
+try
 {
-    $Registered = New-AzWvdRegistrationInfo -SubscriptionId $azureSubscriptionID -ResourceGroupName $resourceGroupName -HostPoolName $existingWVDHostPoolName -ExpirationTime (Get-Date).AddHours(4) -ErrorAction SilentlyContinue
+    log "Obtain RdsRegistrationInfotoken"
+    $Registered = Get-AzWvdRegistrationInfo -SubscriptionId "$azureSubscriptionId" -ResourceGroupName "$resourceGroupName" -HostPoolName $existingWVDHostPoolName
+}
+catch
+{
+    log "[ERROR] - $($_.Exception.Message)"
+}
+
+if ($Registered.Token)
+{ 
+    #Token exists
+    $registrationTokenValidFor = (New-TimeSpan -Start (Get-Date) -End $Registered.ExpirationTime | Select-Object Days, Hours, Minutes, Seconds) 
+    log "Token is valid for: $registrationTokenValidFor"
+}
+
+if (!($Registered.Token) -or ($Registered.ExpirationTime -le (Get-Date)))
+{
+    #Create new token
+    log "Creating new token"
+    try
+    {
+        $Registered = New-AzWvdRegistrationInfo -SubscriptionId $azureSubscriptionId -ResourceGroupName $resourceGroupName -HostPoolName $existingWVDHostPoolName -ExpirationTime (Get-Date).AddHours(4)
+    }
+    catch
+    {
+        log "[ERROR] - $($_.Exception.Message)"
+    }
 }
 $RdsRegistrationInfotoken = $Registered.Token
 

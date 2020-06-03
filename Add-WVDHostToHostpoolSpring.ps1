@@ -27,26 +27,40 @@
     to use the this script.
 #>
 
-
-#Get Parameters
-$existingWVDWorkspaceName = $args[0]
-$existingWVDHostPoolName = $args[1]
-$existingWVDAppGroupName = $args[2]
-$servicePrincipalApplicationID = $args[3]
-$servicePrincipalPassword = $args[4]
-$azureADTenantID =  $args[5]
-$resourceGroupName = $args[6]
-$azureSubscriptionID = $args[7]
-$drainmode = $args[8]
-$createWorkspaceAppGroupAsso = $args[9]
+[cmdletbinding()]
+param (
+    [Parameter(Mandatory = $true)]
+    [string]$existingWVDWorkspaceName,
+    [Parameter(Mandatory = $true)]
+    [string]$existingWVDHostPoolName,
+    [Parameter(Mandatory = $true)]
+    [string]$existingWVDAppGroupName,
+    [Parameter(Mandatory = $true)]
+    [string]$servicePrincipalApplicationId,
+    [Parameter(Mandatory = $true)]
+    [string]$servicePrincipalPassword,
+    [Parameter(Mandatory = $true)]
+    [string]$azureADTenantId,
+    [Parameter(Mandatory = $true)]
+    [string]$resourceGroupName,
+    [Parameter(Mandatory = $true)]
+    [string]$azureSubscriptionId,
+    [Parameter(Mandatory = $true)]
+    [string]$drainmode,
+    [Parameter(Mandatory = $true)]
+    [string]$createWorkspaceAppGroupAsso
+)
 
 #Set Variables
 $RootFolder = "C:\Packages\Plugins\"
-$WVDAgentInstaller = $RootFolder+"WVD-Agent.msi"
-$WVDBootLoaderInstaller = $RootFolder+"WVD-BootLoader.msi"
+$WVDAgentInstaller = $RootFolder + "WVD-Agent.msi"
+$WVDBootLoaderInstaller = $RootFolder + "WVD-BootLoader.msi"
 
 #Create Folder structure
-if (!(Test-Path -Path $RootFolder)){New-Item -Path $RootFolder -ItemType Directory}
+if (!(Test-Path -Path $RootFolder))
+{ 
+    New-Item -Path $RootFolder -ItemType Directory
+}
 
 #Download and Import Modules
 try
@@ -66,13 +80,13 @@ catch
 #Configure logging
 function log
 {
-   param([string]$message)
-   "`n`n$(get-date -f o)  $message" 
+    param([string]$message)
+    "`n`n$(get-date -f o)  $message" 
 }
 
 #Create ServicePrincipal Credential
 log "Creating credentials"
-$ServicePrincipalCreds = New-Object System.Management.Automation.PSCredential($servicePrincipalApplicationID, (ConvertTo-SecureString $servicePrincipalPassword -AsPlainText -Force))
+$ServicePrincipalCreds = New-Object System.Management.Automation.PSCredential($servicePrincipalApplicationId, (ConvertTo-SecureString $servicePrincipalPassword -AsPlainText -Force))
 
 #Set WVD Agent and Boot Loader download locations
 $WVDAgentDownkloadURL = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv"

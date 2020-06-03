@@ -74,9 +74,9 @@ try
 {
     log "Installing / importing modules"
     $ErrorActionPreference = "Stop"
-    Install-PackageProvider NuGet -MinimumVersion 2.8.5.201 -Force -Scope CurrentUser
-    Install-Module -Name Az.DesktopVirtualization -Force -Scope CurrentUser
-    Set-ExecutionPolicy -ExecutionPolicy Bypass -Force -Scope CurrentUser
+    Install-PackageProvider NuGet -MinimumVersion 2.8.5.201 -Force
+    Install-Module -Name Az.DesktopVirtualization -Force
+    Set-ExecutionPolicy -ExecutionPolicy Bypass -Force
     Import-Module -Name Az.DesktopVirtualization
 }
 catch

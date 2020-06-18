@@ -27,7 +27,7 @@
     to use the this script.
 #>
 
-#Variables
+#Variables (below are sample values, change them accordingly before running the script)
 $MSIXSourceLocation = "C:\Install\MSIX Sources\"
 $MSIXSourceFile = "GoogleChromev67_67.228.49301.0_x64__584h4tg0qqenr.msix"
 $MSIXappattachContainerSizeMb = 1000MB

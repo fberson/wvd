@@ -16,9 +16,10 @@ products:
 ## Contents
 
 
-| File/folder                       | Description                                          |
-|-----------------------------------|------------------------------------------------------|
-| `Add-WVDHostToHostpoolSpring.ps1` | Adds an WVD Session Host to an existing WVD Hostpool |
+| File/folder                         | Description                                                            |
+|-------------------------------------|------------------------------------------------------------------------|
+| `Add-WVDHostToHostpoolSpring.ps1`   | Adds an WVD Session Host to an existing WVD Hostpool                   |
+| `Create-MSIXAppAttachContainer.ps1` | Creates an MSIX app attach (vhd) container for a given MSIX applicatio |
 
 
 ## Add-WVDHostToHostpoolSpring.ps1
@@ -30,6 +31,17 @@ This scripts adds an WVD Session Host to an existing WVD Hostpool by performing 
  - Set the WVD Host into drain mode (optionally)
  - Create the Workspace <-> App Group Association (optionally)
 The script is designed and optimized to run as PowerShell Extension as part of a JSON deployment.
+
+## Create-MSIXAppAttachContainer.ps1
+This scripts creates an MSIX app attach (vhd) container for a given MSIX files by:
+ - Creating a new VHD disk
+ - Initializing the disk
+ - Creating a partition on the disk
+ - Formatting the partition, including a customized label
+ - Creating the MSIX parent folder
+ - Extracting the MSIX into the parent folder on the mounted disk
+ - Output the Volume ID and Package name needed for the Staging step of MSIX app attach
+ - Dismount the disk
 
 ## Contributing
 

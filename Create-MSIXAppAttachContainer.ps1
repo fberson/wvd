@@ -15,7 +15,7 @@
 .NOTES  
     File Name  : create-MSIXAppAttachContainer.ps1
     Author     : Freek Berson - Wortell
-    Version    : v1.0.2
+    Version    : v1.0.3
 .EXAMPLE
     .\create-MSIXAppAttachContainer.ps1
 .DISCLAIMER

@@ -63,7 +63,7 @@ $msixmgRresult = Start-Process -FilePath ("`"" + $MSIXMGRLocation + "msixmgr.exe
 
 #Grab the Volume info needed for the Staging part of MSIX app attach
 Write-Host "Completed transforming:"$MSIXSourceFile -ForegroundColor green
-Write-Host "Disk Volume ID:" ((Get-Volume -DriveLetter "F" | select UniqueId).UniqueId | out-string).Substring(11,((Get-Volume -DriveLetter "F" | select UniqueId).UniqueId.Length-13)) -ForegroundColor Cyan
+Write-Host "Disk Volume ID:" ((Get-Volume -DriveLetter $partition.DriveLetter | select UniqueId).UniqueId | out-string).Substring(11,((Get-Volume -DriveLetter $partition.DriveLetter | select UniqueId).UniqueId.Length-13)) -ForegroundColor Cyan
 Write-Host "Package Name:" (Get-ChildItem -Path ($partition.DriveLetter+":\"+$MSIXappattachContainerRootFolder) | select Name).name -ForegroundColor Cyan
 
 #Dismount the VHD

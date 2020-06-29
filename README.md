@@ -16,14 +16,14 @@ products:
 ## Contents
 
 
-| File/folder                         | Description                                                             |
-|-------------------------------------|-------------------------------------------------------------------------|
-| `Add-WVDHostToHostpoolSpring.ps1`   | Adds an WVD Session Host to an existing WVD Hostpool                    |
-| `Create-MSIXAppAttachContainer.ps1` | Creates an MSIX app attach (vhd) container for a given MSIX application |
-
+| File/folder                         | Description                                                               |
+|-------------------------------------|---------------------------------------------------------------------------|
+| `Add-WVDHostToHostpoolSpring.ps1`   | Adds an WVD Session Host to an existing WVD Hostpool                      |
+| `Create-MSIXAppAttachContainer.ps1` | Creates an MSIX app attach (vhd) container for a given MSIX application   |
+| `WVD-Rest-Api-Functions.ps1`        | Contains functions and exmaples to get & create WVD object using REST API |
 
 ## Add-WVDHostToHostpoolSpring.ps1
-This scripts adds an WVD Session Host to an existing WVD Hostpool by performing the following action:
+This script adds an WVD Session Host to an existing WVD Hostpool by performing the following action:
  - Download the WVD agent
  - Download the WVD Boot Loader
  - Install the WVD Agent, using the provided hostpoolRegistrationToken
@@ -33,7 +33,7 @@ This scripts adds an WVD Session Host to an existing WVD Hostpool by performing 
 The script is designed and optimized to run as PowerShell Extension as part of a JSON deployment.
 
 ## Create-MSIXAppAttachContainer.ps1
-This scripts creates an MSIX app attach (vhd) container for a given MSIX file by:
+This script creates an MSIX app attach (vhd) container for a given MSIX file by:
  - Creating a new VHD disk
  - Initializing the disk
  - Creating a partition on the disk
@@ -42,6 +42,17 @@ This scripts creates an MSIX app attach (vhd) container for a given MSIX file by
  - Extracting the MSIX into the parent folder on the mounted disk
  - Output the Volume ID and Package name needed for the Staging step of MSIX app attach
  - Dismount the disk
+ 
+ ## WVD-Rest-Api-Functions.ps1
+This script contains the following functions that use REST API for WVD
+ - Get-WorkSpace
+ - Get-Hostpool
+ - Get-AppGroup
+ - Get-Apps
+ - New-WorkSpace
+ - New-Hostpool
+ - New-AppGroup
+ - New-App
 
 ## Contributing
 

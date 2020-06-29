@@ -2,7 +2,7 @@
 .SYNOPSIS  
     Contains functions to get & create WVD Workpaces, Hostpools, App Groups and apps using REST API
 .DESCRIPTION  
-    This contains the following functions that use REST API for WVD
+    This script contains the following functions that use REST API for WVD
     - Get-WorkSpace
     - Get-Hostpool
     - Get-AppGroup
@@ -253,9 +253,3 @@ $AppBody = @"
 }
 "@
 New-WVDApp -AzureSubscriptionID $AzureSubscriptionID -ResourceGroupName $ResourceGroupName  -AppGroupName $AppGroupName -AppGroupBody $AppBody -AppName $ApplicationName
-
-
-
-
-
-

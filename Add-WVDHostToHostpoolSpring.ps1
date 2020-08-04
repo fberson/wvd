@@ -11,7 +11,7 @@
     - Create the Workspace <-> App Group Association (optionally)
     The script is designed and optimized to run as PowerShell Extension as part of a JSON deployment.
 .NOTES  
-    File Name  : dd-WVDHostToHostpoolSpring.ps1
+    File Name  : add-WVDHostToHostpoolSpring.ps1
     Author     : Freek Berson - Wortell - RDSGurus
     Version    : v1.3.6
 .EXAMPLE

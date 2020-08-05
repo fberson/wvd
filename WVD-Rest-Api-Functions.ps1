@@ -157,10 +157,10 @@ $apiToken = Invoke-RestMethod -Method POST -uri $AuthTokenURL -Body `
 (@{grant_type="client_credentials";client_Id=$AppID;client_Secret=$AppSecret;resource=$azureManagementURL})
 
 #Concat the REST API header
-$apiHeader = @{"Authorization"="$($apiToken.token_type) $($apiToken.access_token)"; “Content-Type" = “application/json"}
+$apiHeader = @{"Authorization"="$($apiToken.token_type) $($apiToken.access_token)"; "Content-Type" = "application/json"}
 
 #Concat the REST API header
-$apiHeaderApps = @{"Authorization"="$($apiToken.token_type) $($apiToken.access_token)"; “Content-Type" = “application/json; charset=utf-8"}
+$apiHeaderApps = @{"Authorization"="$($apiToken.token_type) $($apiToken.access_token)"; "Content-Type" = "application/json; charset=utf-8"}
 
 
 

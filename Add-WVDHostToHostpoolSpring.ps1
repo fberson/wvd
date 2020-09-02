@@ -90,6 +90,9 @@ Log "Install the WVD Agent"
 Invoke-WebRequest -Uri $WVDAgentDownkloadURL -OutFile $WVDAgentInstaller
 Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $WVDAgentInstaller", "/quiet", "/qn", "/norestart", "/passive", "REGISTRATIONTOKEN=$RdsRegistrationInfotoken", "/l* C:\Users\AgentInstall.txt" | Wait-process
 
+#Wait to ensure WVD Agent has enought time to finish
+Start-sleep 15
+
 #Install the WVD Bootloader
 Log "Install the Boot Loader"
 Invoke-WebRequest -Uri $WVDBootLoaderDownkloadURL -OutFile $WVDBootLoaderInstaller

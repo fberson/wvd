@@ -13,7 +13,7 @@
 .NOTES  
     File Name  : add-WVDHostToHostpoolSpring.ps1
     Author     : Freek Berson - Wortell - RDSGurus
-    Version    : v1.3.6
+    Version    : v1.3.7
 .EXAMPLE
     .\Add-WVDHostToHostpool.ps1 existingWVDWorkspaceName existingWVDHostPoolName `
       existingWVDAppGroupName servicePrincipalApplicationID servicePrincipalPassword azureADTenantID 

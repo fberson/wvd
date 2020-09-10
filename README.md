@@ -21,6 +21,7 @@ products:
 | `Add-WVDHostToHostpoolSpring.ps1`   | Adds an WVD Session Host to an existing WVD Hostpool                      |
 | `Create-MSIXAppAttachContainer.ps1` | Creates an MSIX app attach (vhd) container for a given MSIX application   |
 | `WVD-Rest-Api-Functions.ps1`        | Contains functions and exmaples to get & create WVD object using REST API |
+| `Create-WVD-Backplane.bicep`        | To build the ARM JSON code to create WVD back plane components in Azure   |
 
 ## Add-WVDHostToHostpoolSpring.ps1
 This script adds an WVD Session Host to an existing WVD Hostpool by performing the following action:
@@ -53,6 +54,13 @@ This script contains the following functions that use REST API for WVD
  - New-Hostpool
  - New-AppGroup
  - New-App
+ 
+  ## Create-WVD-Backplane.bicep
+This Azure .bicep file (based on 0.1.1 Alpha Preview release of Project Bicep) generates the ARM Template (JSON) to create:
+ - A WVD Workspace
+ - A WVD Host pool
+ - A WVD App Group
+And connect the AppGroup with the Host pool
 
 ## Contributing
 

@@ -13,7 +13,7 @@
 .NOTES  
     File Name  : add-WVDHostToHostpoolSpring.ps1
     Author     : Freek Berson - Wortell - RDSGurus
-    Version    : v1.3.7
+    Version    : v1.3.8
 .EXAMPLE
     .\Add-WVDHostToHostpool.ps1 existingWVDWorkspaceName existingWVDHostPoolName `
       existingWVDAppGroupName servicePrincipalApplicationID servicePrincipalPassword azureADTenantID 
@@ -26,7 +26,6 @@
     of business profits, business interruption, loss of business information, or other pecuniary loss) arising out of the use of or inability
     to use the this script.
 #>
-
 
 #Get Parameters
 $existingWVDWorkspaceName = $args[0]
@@ -54,7 +53,6 @@ Install-Module -Name Az.DesktopVirtualization -AllowClobber -Force
 Set-ExecutionPolicy -ExecutionPolicy Bypass -force
 Import-Module -Name Az.DesktopVirtualization
 
-
 #Configure logging
 function log
 {
@@ -66,9 +64,18 @@ function log
 log "Creating credentials"
 $ServicePrincipalCreds = New-Object System.Management.Automation.PSCredential($servicePrincipalApplicationID, (ConvertTo-SecureString $servicePrincipalPassword -AsPlainText -Force))
 
-#Set WVD Agent and Boot Loader download locations
-$WVDAgentDownkloadURL = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv"
-$WVDBootLoaderDownkloadURL = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH"
+#Download all source file async and wait for completion
+log  "Download WVD Agent & bootloader"
+$files = @(
+    @{url = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrmXv"; path = $WVDAgentInstaller}
+    @{url = "https://query.prod.cms.rt.microsoft.com/cms/api/am/binary/RWrxrH"; path = $WVDBootLoaderInstaller}
+)
+$workers = foreach ($f in $files)
+{ 
+    $wc = New-Object System.Net.WebClient
+    Write-Output $wc.DownloadFileTaskAsync($f.url, $f.path)
+}
+$workers.Result
 
 #Authenticatie against the WVD Tenant
 log "Authenticatie against the WVD Tenant"
@@ -87,15 +94,13 @@ $RdsRegistrationInfotoken = $Registered.Token
 
 #Install the WVD Agent
 Log "Install the WVD Agent"
-Invoke-WebRequest -Uri $WVDAgentDownkloadURL -OutFile $WVDAgentInstaller
 Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $WVDAgentInstaller", "/quiet", "/qn", "/norestart", "/passive", "REGISTRATIONTOKEN=$RdsRegistrationInfotoken", "/l* C:\Users\AgentInstall.txt" | Wait-process
 
-#Wait to ensure WVD Agent has enought time to finish
+#Wait to ensure WVD Agent has enough time to finish
 Start-sleep 15
 
 #Install the WVD Bootloader
 Log "Install the Boot Loader"
-Invoke-WebRequest -Uri $WVDBootLoaderDownkloadURL -OutFile $WVDBootLoaderInstaller
 Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $WVDBootLoaderInstaller", "/quiet", "/qn", "/norestart", "/passive", "/l* C:\Users\AgentBootLoaderInstall.txt" | Wait-process
 
 #Set WVD Session Host in drain mode

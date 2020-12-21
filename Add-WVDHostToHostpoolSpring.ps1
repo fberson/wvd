@@ -97,7 +97,7 @@ Log "Install the WVD Agent"
 Start-Process -FilePath "msiexec.exe" -ArgumentList "/i $WVDAgentInstaller", "/quiet", "/qn", "/norestart", "/passive", "REGISTRATIONTOKEN=$RdsRegistrationInfotoken", "/l* C:\Users\AgentInstall.txt" | Wait-process
 
 #Wait to ensure WVD Agent has enough time to finish
-Start-sleep 15
+Start-sleep 30
 
 #Install the WVD Bootloader
 Log "Install the Boot Loader"

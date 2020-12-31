@@ -16,13 +16,14 @@ products:
 ## Contents
 
 
-| File/folder                         | Description                                                                         |
-|-------------------------------------|-------------------------------------------------------------------------------------|
-| `Add-WVDHostToHostpoolSpring.ps1`   | Adds an WVD Session Host to an existing WVD Hostpool                                |
-| `Create-MSIXAppAttachContainer.ps1` | Creates an MSIX app attach (vhd) container for a given MSIX application             |
-| `WVD-Rest-Api-Functions.ps1`        | Contains functions and exmaples to get & create WVD object using REST API           |
-| `Create-WVD-Backplane.bicep`        | To build the ARM JSON code to create WVD back plane components in Azure             |
-| `BicepModules`                      | Contains various Bicep Modules to create an WVD environment incl other components   |
+| File/folder                         | Description                                                                                    |
+|-------------------------------------|------------------------------------------------------------------------------------------------|
+| `Add-WVDHostToHostpoolSpring.ps1`   | Adds an WVD Session Host to an existing WVD Hostpool                                           |
+| `Add-WVDHostToHostpoolSpringV2.ps1` | Adds an WVD Session Host to an existing WVD Hostpool accepting the registation key as a param  |
+| `Create-MSIXAppAttachContainer.ps1` | Creates an MSIX app attach (vhd) container for a given MSIX application                        |
+| `WVD-Rest-Api-Functions.ps1`        | Contains functions and exmaples to get & create WVD object using REST API                      |
+| `Create-WVD-Backplane.bicep`        | To build the ARM JSON code to create WVD back plane components in Azure                        |
+| `BicepModules`                      | Contains various Bicep Modules to create an WVD environment incl other components              |
 
 
 ## Add-WVDHostToHostpoolSpring.ps1
@@ -34,6 +35,15 @@ This script adds an WVD Session Host to an existing WVD Hostpool by performing t
  - Set the WVD Host into drain mode (optionally)
  - Create the Workspace <-> App Group Association (optionally)
 The script is designed and optimized to run as PowerShell Extension as part of a JSON deployment.
+
+## Add-WVDHostToHostpoolSpringV2.ps1
+Adds an WVD Session Host to an existing WVD Hostpool using a provided registrationKey by performing the following action:
+ - Download the WVD agent
+ - Download the WVD Boot Loader
+ - Install the WVD Agent, using the provided hostpoolRegistrationToken
+ - Install the WVD Boot Loader
+The script is designed and optimized to run as PowerShell Extension as part of a JSON deployment.
+V1 of this script generates its own host pool registrationkey, this V2 version accepts the registrationkey as a parameter
 
 ## Create-MSIXAppAttachContainer.ps1
 This script creates an MSIX app attach (vhd) container for a given MSIX file by:

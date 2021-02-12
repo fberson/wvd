@@ -24,20 +24,22 @@
     to use the this script.
 #>
 
+#Get Parameters
+$registrationKey = $args[0]
+
+#Set Variables
+$RootFolder = "C:\Packages\Plugins\"
+$WVDAgentInstaller = $RootFolder+"WVD-Agent.msi"
+$WVDBootLoaderInstaller = $RootFolder+"WVD-BootLoader.msi"
+
 <#
 .DESCRIPTION
 Runs defined msi's to deploy RDAgent and Bootloader
-
 .PARAMETER programDisplayName
-
 .PARAMETER argumentList
-
 .PARAMETER msiOutputLogPath
-
 .PARAMETER isUninstall
-
 .PARAMETER msiLogVerboseOutput
-
 #>
 function RunMsiWithRetry {
     param(
@@ -102,13 +104,10 @@ function RunMsiWithRetry {
 <#
 .DESCRIPTION
 Uninstalls any existing RDAgent BootLoader and RD Infra Agent installations and then installs the RDAgent BootLoader and RD Infra Agent using the specified registration token.
-
 .PARAMETER AgentInstallerFolder
 Required path to MSI installer file
-
 .PARAMETER AgentBootServiceInstallerFolder
 Required path to MSI installer file
-
 #>
 function InstallRDAgents {
     Param(
@@ -195,15 +194,6 @@ function InstallRDAgents {
     Log -Message "Starting service $bootloaderServiceName"
     Start-Service $bootloaderServiceName
 }
-
-
-#Get Parameters
-$registrationKey = $args[0]
-
-#Set Variables
-$RootFolder = "C:\Packages\Plugins\"
-$WVDAgentInstaller = $RootFolder+"WVD-Agent.msi"
-$WVDBootLoaderInstaller = $RootFolder+"WVD-BootLoader.msi"
 
 #Create Folder structure
 if (!(Test-Path -Path $RootFolder)){New-Item -Path $RootFolder -ItemType Directory}

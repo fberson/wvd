@@ -31,17 +31,11 @@
 <#
 .DESCRIPTION
 Runs defined msi's to deploy RDAgent and Bootloader
-
 .PARAMETER programDisplayName
-
 .PARAMETER argumentList
-
 .PARAMETER msiOutputLogPath
-
 .PARAMETER isUninstall
-
 .PARAMETER msiLogVerboseOutput
-
 #>
 function RunMsiWithRetry {
     param(
@@ -106,13 +100,10 @@ function RunMsiWithRetry {
 <#
 .DESCRIPTION
 Uninstalls any existing RDAgent BootLoader and RD Infra Agent installations and then installs the RDAgent BootLoader and RD Infra Agent using the specified registration token.
-
 .PARAMETER AgentInstallerFolder
 Required path to MSI installer file
-
 .PARAMETER AgentBootServiceInstallerFolder
 Required path to MSI installer file
-
 #>
 function InstallRDAgents {
     Param(

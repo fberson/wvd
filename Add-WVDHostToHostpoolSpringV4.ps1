@@ -219,6 +219,6 @@ $workers = foreach ($f in $files)
 $workers.Result
 
 Log "Calling functions to install agent and bootloader"
-InstallRDAgents -AgentBootServiceInstallerFolder $RootFolder -AgentInstallerFolder $RootFolder -RegistrationToken $RdsRegistrationInfotoken -EnableVerboseMsiLogging:$false
+InstallRDAgents -AgentBootServiceInstallerFolder $RootFolder -AgentInstallerFolder $RootFolder -RegistrationToken $registrationKey -EnableVerboseMsiLogging:$false
 
 Log "Finished"

@@ -76,11 +76,11 @@ function RunMsiWithRetry {
         $modeAndDisplayName = ($(if ($isUninstall) { "Uninstalling" } else { "Installing" }) + " $programDisplayName")
 
         if ($retryCount -gt 0) {
-            Log -Message "Retrying $modeAndDisplayName in $retryTimeToSleepInSec seconds because it failed with Exit code=$sts This will be retry number $retryCount"
+            Log  "Retrying $modeAndDisplayName in $retryTimeToSleepInSec seconds because it failed with Exit code=$sts This will be retry number $retryCount"
             Start-Sleep -Seconds $retryTimeToSleepInSec
         }
 
-        Log -Message ( "$modeAndDisplayName" + $(if ($msiLogVerboseOutput) { " with verbose msi logging" } else { "" }))
+        Log ( "$modeAndDisplayName" + $(if ($msiLogVerboseOutput) { " with verbose msi logging" } else { "" }))
 
 
         $processResult = Start-Process -FilePath "msiexec.exe" -ArgumentList $argumentList -Wait -Passthru
@@ -91,11 +91,11 @@ function RunMsiWithRetry {
     while ($sts -eq 1618 -and $retryCount -lt 20) 
 
     if ($sts -eq 1618) {
-        Log -Err "Stopping retries for $modeAndDisplayName. The last attempt failed with Exit code=$sts which is ERROR_INSTALL_ALREADY_RUNNING"
+        Log  "Stopping retries for $modeAndDisplayName. The last attempt failed with Exit code=$sts which is ERROR_INSTALL_ALREADY_RUNNING"
         throw "Stopping because $modeAndDisplayName finished with Exit code=$sts"
     }
     else {
-        Log -Message "$modeAndDisplayName finished with Exit code=$sts"
+        Log "$modeAndDisplayName finished with Exit code=$sts"
     }
 
     return $sts
@@ -129,10 +129,10 @@ function InstallRDAgents {
 
     $ErrorActionPreference = "Stop"
 
-    Log -Message "Boot loader folder is $AgentBootServiceInstallerFolder"
+    Log  "Boot loader folder is $AgentBootServiceInstallerFolder"
     $AgentBootServiceInstaller = $AgentBootServiceInstallerFolder + '\WVD-BootLoader.msi'
 
-    Log -Message "Agent folder is $AgentInstallerFolder"
+    Log  "Agent folder is $AgentInstallerFolder"
     $AgentInstaller = $AgentInstallerFolder + '\WVD-Agent.msi'
 
     if (!$RegistrationToken) {
@@ -164,10 +164,10 @@ function InstallRDAgents {
         }
     }
 
-    Log -Message "Installing RD Infra Agent on VM $AgentInstaller"
+    Log  "Installing RD Infra Agent on VM $AgentInstaller"
     RunMsiWithRetry -programDisplayName "RD Infra Agent" -argumentList @("/i $AgentInstaller", "/quiet", "/qn", "/norestart", "/passive", "REGISTRATIONTOKEN=$RegistrationToken") -msiOutputLogPath "C:\Users\AgentInstall.txt" -msiLogVerboseOutput:$EnableVerboseMsiLogging
 
-    Log -Message "Installing RDAgent BootLoader on VM $AgentBootServiceInstaller"
+    Log  "Installing RDAgent BootLoader on VM $AgentBootServiceInstaller"
     RunMsiWithRetry -programDisplayName "RDAgent BootLoader" -argumentList @("/i $AgentBootServiceInstaller", "/quiet", "/qn", "/norestart", "/passive") -msiOutputLogPath "C:\Users\AgentBootLoaderInstall.txt" -msiLogVerboseOutput:$EnableVerboseMsiLogging
 
     $bootloaderServiceName = "RDAgentBootLoader"
@@ -177,11 +177,11 @@ function InstallRDAgents {
         $msgToWrite = "Service $bootloaderServiceName was not found. "
         if ($retry) { 
             $msgToWrite += "Retrying again in 30 seconds, this will be retry $startBootloaderRetryCount" 
-            Log -Message $msgToWrite
+            Log  $msgToWrite
         } 
         else {
             $msgToWrite += "Retry limit exceeded" 
-            Log -Err $msgToWrite
+            Log $msgToWrite
             throw $msgToWrite
         }
             
@@ -189,7 +189,7 @@ function InstallRDAgents {
         Start-Sleep -Seconds 30
     }
 
-    Log -Message "Starting service $bootloaderServiceName"
+    Log  "Starting service $bootloaderServiceName"
     Start-Service $bootloaderServiceName
 }
 

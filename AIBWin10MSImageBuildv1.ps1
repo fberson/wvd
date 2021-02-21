@@ -33,8 +33,6 @@ $files = @(
     @{url = "https://aka.ms/fslogix_download"; path = "c:\temp\apps\fslogix.zip"}
     @{url = "https://teams.microsoft.com/downloads/desktopurl?env=production&plat=windows&download=true&managedInstaller=true&arch=x64"; path = "c:\temp\apps\Teams.msi"}
     @{url=  "https://go.microsoft.com/fwlink/?linkid=844652"; path = "c:\temp\apps\OneDriveSetup.exe"}
-    @{url=  "https://software-download.microsoft.com/download/pr/19041.1.191206-1406.vb_release_amd64fre_FOD-PACKAGES_OEM_PT1_amd64fre_MULTI.iso"; path = "c:\temp\apps\19041.1.191206-1406.vb_release_amd64fre_FOD-PACKAGES_OEM_PT1_amd64fre_MULTI.iso"}
-    @{url=  "https://software-download.microsoft.com/download/pr/19041.1.191206-1406.vb_release_CLIENTLANGPACKDVD_OEM_MULTI.iso"; path = "c:\temp\apps\19041.1.191206-1406.vb_release_CLIENTLANGPACKDVD_OEM_MULTI.iso"}
 )
 $workers = foreach ($f in $files)
 { 
@@ -56,7 +54,7 @@ Write-Host "*** FSLogix Install time: "$scriptActionDuration.Minutes "Minute(s),
 
 #Install Microsoft Teams
 $scriptActionStartTime = get-date
-Write-host ('*** STEP 3 : Install Microsoft Teams [ '+(get-date) + ' ]')
+Write-host ('*** STEP 2 : Install Microsoft Teams [ '+(get-date) + ' ]')
 New-Item -Path 'HKLM:\SOFTWARE\Microsoft\Teams' -Force | Out-Null
 New-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Teams' -Name 'IsWVDEnvironment' -Value 1 -PropertyType DWORD -Force | Out-Null
 Start-Sleep -Seconds 30
@@ -66,14 +64,14 @@ Write-Host "*** Microsoft Teams Install time: "$scriptActionDuration.Minutes "Mi
 
 #Install Onedrive per machine
 $scriptActionStartTime = get-date
-Write-host ('*** STEP 5 : Install Microsoft OneDrive per machine [ '+(get-date) + ' ]')
+Write-host ('*** STEP 3 : Install Microsoft OneDrive per machine [ '+(get-date) + ' ]')
 Start-Process -FilePath 'C:\temp\apps\OneDriveSetup.exe' -ArgumentList '/allusers'
 $scriptActionDuration = (get-date) - $scriptActionStartTime
 Write-Host "*** Onedrive per machine Install time: "$scriptActionDuration.Minutes "Minute(s), " $scriptActionDuration.seconds "Seconds and " $scriptActionDuration.Milliseconds "Milleseconds"
 
 #Remove undeeded appx
 $scriptActionStartTime = get-date
-Write-host ('*** STEP 7 : Remove undeeded appx [ '+(get-date) + ' ]')
+Write-host ('*** STEP 4 : Remove undeeded appx [ '+(get-date) + ' ]')
 $appname = @(
 "*windowscommunicationsapps*"
 "*officehub*"
@@ -106,7 +104,7 @@ Write-Host "*** Remove undeeded appx time: "$scriptActionDuration.Minutes "Minut
 
 #Disable Internet Explorer
 $scriptActionStartTime = get-date
-Write-host ('*** STEP 8 : Disable Internet Explorer [ '+(get-date) + ' ]')
+Write-host ('*** STEP 5 : Disable Internet Explorer [ '+(get-date) + ' ]')
 Disable-WindowsOptionalFeature -FeatureName Internet-Explorer-Optional-amd64 -Online -NoRestart
 $scriptActionDuration = (get-date) - $scriptActionStartTime
 Write-Host "*** Disable Internet Explorer time: "$scriptActionDuration.Minutes "Minute(s), " $scriptActionDuration.seconds "Seconds and " $scriptActionDuration.Milliseconds "Milleseconds"

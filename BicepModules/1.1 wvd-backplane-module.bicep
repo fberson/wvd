@@ -53,7 +53,7 @@ resource ws 'Microsoft.DesktopVirtualization/workspaces@2019-12-10-preview' = {
 }
 
 //Create Azure Log Analytics Workspace
-module wvdmonitor './6.4. wvd-LogAnalytics.bicep' = {
+module wvdmonitor './1.4. wvd-LogAnalytics.bicep' = {
   name : 'LAWorkspace'
   scope: resourceGroup(logAnalyticsResourceGroup)
   params: {

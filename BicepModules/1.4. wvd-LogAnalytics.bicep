@@ -19,7 +19,7 @@ resource wvdla 'Microsoft.OperationalInsights/workspaces@2020-08-01' = {
 }
 
 //Create Diagnotic Setting for WVD components
-module wvdmonitor './6.4.1. wvd-monitor-diag.bicep' = {
+module wvdmonitor './1.4.1. wvd-monitor-diag.bicep' = {
   name : 'myBicepLADiag'
   scope: resourceGroup(wvdBackplaneResourceGroup)
   params: {

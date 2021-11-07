@@ -9,6 +9,8 @@ param scalingPlanFriendlyName string
 ])
 param scalingPlanHostPoolType string
 param scalingPlanTimeZone string
+param scalingPlanhostPoolArmPath string
+param scalingPlanEnabled bool = true
 
 //Weekdays schedule parameters
 param weekdaysScheduleName string
@@ -86,7 +88,7 @@ param weekendsSchedulerampDownStopHostsWhen string
 param weekendsrampDownWaitTimeMinutes int
 param weekendsrampDownNotificationMessage string
 
-@description('Create AVD Scaling plan including a weekdays & weekens schdedule')
+@description('Create an VD Scaling plan including a weekdays and weekends schedule')
 resource sp 'Microsoft.DesktopVirtualization/scalingPlans@2021-09-03-preview' = {
   name: scalingPlanName
   location: scalingPlanLocation
@@ -94,7 +96,7 @@ resource sp 'Microsoft.DesktopVirtualization/scalingPlans@2021-09-03-preview' = 
     description: scalingPlanDescription
     exclusionTag: scalingPlanExclusionTag
     friendlyName: scalingPlanFriendlyName
-    hostPoolType: scalingPlanHostPoolType
+    hostPoolType: scalingPlanHostPoolType    
     schedules: [
       {
         rampUpStartTime: {
@@ -171,6 +173,11 @@ resource sp 'Microsoft.DesktopVirtualization/scalingPlans@2021-09-03-preview' = 
       }
     ]
     timeZone: scalingPlanTimeZone
-    hostPoolReferences: []
+    hostPoolReferences: [
+      {
+        hostPoolArmPath: scalingPlanhostPoolArmPath
+        scalingPlanEnabled: scalingPlanEnabled
+      }
+    ]
   }
 }

@@ -222,8 +222,8 @@ InstallRDAgents -AgentBootServiceInstallerFolder $RootFolder -AgentInstallerFold
 log "Wait for IsRegistered status"
 $isRegistered = 0
 DO {
-    $isRegistered = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\RDInfraAgent' -Name 'Isregistered').IsRegistered
+    $isRegistered = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\RDInfraAgent' -Name 'Isregistered' -ErrorAction Ignore).IsRegistered
     Start-Sleep -Seconds 15
-} While ($isRegistered -eq 0)
+} While ($isRegistered -ne 1)
 
 Log "Finished"

@@ -26,6 +26,12 @@
 
 #Get Parameters
 $registrationKey = $args[0]
+$adDomainName = $args[1]
+$domainJoinUPN = $args[2]
+$domainJoinPassword = $args[3]
+$ouPath = $args[4]
+$creds = New-Object System.Management.Automation.PSCredential($domainJoinUPN,(ConvertTo-SecureString $domainJoinPassword -AsPlainText -Force))
+
 
 #Set Variables
 $RootFolder = "C:\Packages\Plugins\"
@@ -225,5 +231,8 @@ DO {
     $isRegistered = (Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\RDInfraAgent' -Name 'Isregistered' -ErrorAction Ignore).IsRegistered
     Start-Sleep -Seconds 15
 } While ($isRegistered -ne 1)
+
+log "Join host to domain"
+Add-Computer -DomainName $adDomainName -Credential $creds -OUPath $ouPath -Restart -Force
 
 Log "Finished"

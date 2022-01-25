@@ -10,11 +10,17 @@
     The script is designed and optimized to run as PowerShell Extension as part of a JSON deployment.
     V1 of this script generates its own host pool registrationkey, this V2 version accepts the registrationkey as a parameter
 .NOTES  
-    File Name  : add-WVDHostToHostpoolSpringV4.ps1
+    File Name  : add-WVDHostToHostpoolSpringV5.ps1
     Author     : Freek Berson - Wortell - RDSGurus
     Version    : v1.0.0
 .EXAMPLE
-    .\add-WVDHostToHostpoolSpringV4.ps1 registrationKey >> <yourlogdir>\add-WVDHostToHostpoolSpringV2.log
+    .\add-WVDHostToHostpoolSpringV5.ps1 `
+    registrationKey `
+    adDomainName `
+    domainJoinUPN `
+    domainJoinPassword `
+    ouPath `
+    >> <yourlogdir>\add-WVDHostToHostpoolSpringV2.log
 .DISCLAIMER
     Use at your own risk. This scripts are provided AS IS without warranty of any kind. The author further disclaims all implied
     warranties including, without limitation, any implied warranties of merchantability or of fitness for a particular purpose. The entire risk

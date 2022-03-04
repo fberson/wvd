@@ -1,4 +1,4 @@
-﻿<#  
+<#  
 .SYNOPSIS  
     Creates an MSIX app attach (vhd) container for a given MSIX application
 .DESCRIPTION  
@@ -28,23 +28,24 @@
 #>
 
 #Variables (below are sample values, change them accordingly before running the script)
-$MSIXSourceLocation = "C:\Install\MSIX Sources\"
-$MSIXSourceFile = "GoogleChromev67_67.228.49301.0_x64__584h4tg0qqenr.msix"
-$MSIXappattachContainerSizeMb = 1000MB
-$MSIXappattachContainerLabel = "GoogleChrome"
-$MSIXappattachContainerRootFolder = "GoogleChrome"
-$MSIXMGRLocation = "C:\Program Files\msixmgr\"
+$MSIXSourceLocation = "C:\MSIX\2.MSIX-packages\"
+$MSIXAppAttachDestinationPath = "C:\MSIX\3.MSIX-app-attach\"
+$MSIXSourceFiles = @("NotepadPlusPlus.msix")
+$MSIXappattachContainerSizeMb = 100MB
+$MSIXappattachContainerLabel = "NotepadPlusplus"
+$MSIXappattachContainerRootFolder = "NotepadPlusplus"
+$MSIXMGRLocation = "C:\Program Files\msixmgr\x64\"
 $MSIXappattachContainerExtension = ".vhd"
 
-CLS
+Clear-Host
 $Starttime = get-date
 
 #Create new VHD
-if (Test-Path -path ($MSIXSourceLocation+($MSIXSourceFile.Substring(0,$MSIXSourceFile.Length-5))+$MSIXappattachContainerExtension) -PathType Leaf){Write-Host "VHD Already exists, exiting" -ForegroundColor Red;return}
-New-VHD -SizeBytes $MSIXappattachContainerSizeMb -Path ($MSIXSourceLocation+($MSIXSourceFile.Substring(0,$MSIXSourceFile.Length-5))+$MSIXappattachContainerExtension) -Dynamic -Confirm:$false  
+if (Test-Path -path ($MSIXAppAttachDestinationPath+$MSIXappattachContainerLabel+$MSIXappattachContainerExtension) -PathType Leaf){Write-Host "VHD Already exists, exiting" -ForegroundColor Red;return}
+New-VHD -SizeBytes $MSIXappattachContainerSizeMb -Path ($MSIXAppAttachDestinationPath+$MSIXappattachContainerLabel+$MSIXappattachContainerExtension) -Dynamic -Confirm:$false  
 
 #Mount the VHD
-$vhdObject = Mount-VHD ($MSIXSourceLocation+($MSIXSourceFile.Substring(0,$MSIXSourceFile.Length-5))+$MSIXappattachContainerExtension) -Passthru
+$vhdObject = Mount-VHD ($MSIXAppAttachDestinationPath+$MSIXappattachContainerLabel+$MSIXappattachContainerExtension) -Passthru
 
 #Initialize disk
 $disk = Initialize-Disk -Passthru -Number $vhdObject.Number
@@ -59,15 +60,18 @@ Format-Volume -FileSystem NTFS -Confirm:$false -DriveLetter $partition.DriveLett
 New-Item -Path ($partition.DriveLetter+":\"+$MSIXappattachContainerRootFolder) -ItemType Directory
 
 #Extract the MSIX into the app attach container (vhd)
-$msixmgRresult = Start-Process -FilePath ("`"" + $MSIXMGRLocation + "msixmgr.exe" +"`"") -ArgumentList ("-Unpack -packagePath `"" + ($MSIXSourceLocation+$MSIXSourceFile) + "`" -destination `"" + ($partition.DriveLetter+":\"+$MSIXappattachContainerRootFolder) +"`" -applyacls") -Wait | Wait-process
-
-#Grab the Volume info needed for the Staging part of MSIX app attach
-Write-Host "Completed transforming:"$MSIXSourceFile -ForegroundColor green
-Write-Host "Disk Volume ID:" ((Get-Volume -DriveLetter $partition.DriveLetter | select UniqueId).UniqueId | out-string).Substring(11,((Get-Volume -DriveLetter $partition.DriveLetter | select UniqueId).UniqueId.Length-13)) -ForegroundColor Cyan
-Write-Host "Package Name:" (Get-ChildItem -Path ($partition.DriveLetter+":\"+$MSIXappattachContainerRootFolder) | select Name).name -ForegroundColor Cyan
+foreach ($MSIXSourceFile in $MSIXSourceFiles)
+{
+    $msixmgRresult = Start-Process -FilePath ("`"" + $MSIXMGRLocation + "msixmgr.exe" +"`"") -ArgumentList ("-Unpack -packagePath `"" + ($MSIXSourceLocation+$MSIXSourceFile) + "`" -destination `"" + ($partition.DriveLetter+":\"+$MSIXappattachContainerRootFolder) +"`" -applyacls") -Wait | Wait-process
+    #Grab the Volume info needed for the Staging part of MSIX app attach
+    Write-Host "Completed transforming:"$MSIXSourceFile -ForegroundColor green
+}
+Write-Host "Disk Volume ID:" ((Get-Volume -DriveLetter $partition.DriveLetter | Select-Object UniqueId).UniqueId | out-string).Substring(11,((Get-Volume -DriveLetter $partition.DriveLetter | select UniqueId).UniqueId.Length-13)) -ForegroundColor Cyan
+Write-Host "Package Names:" -ForegroundColor green
+(Get-ChildItem -Path ($partition.DriveLetter+":\"+$MSIXappattachContainerRootFolder) | Select-Object Name).name 
 
 #Dismount the VHD
-Dismount-VHD ($MSIXSourceLocation+($MSIXSourceFile.Substring(0,$MSIXSourceFile.Length-5))+$MSIXappattachContainerExtension)
+Dismount-VHD ($MSIXAppAttachDestinationPath+$MSIXappattachContainerLabel+$MSIXappattachContainerExtension)
 Write-Host "Disk is dismounted and ready"
 
 Write-Host "Finished! Total transformation time:"((get-date) - $Starttime).Minutes "Minute(s) and" ((get-date) - $Starttime).seconds "Seconds."

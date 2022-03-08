@@ -17,7 +17,8 @@
 .EXAMPLE
     .\add-WVDHostToHostpoolSpringV3.ps11 existingWVDWorkspaceName existingWVDHostPoolName `
       existingWVDAppGroupName servicePrincipalApplicationID servicePrincipalPassword azureADTenantID 
-      resourceGroupName azureSubscriptionID Drainmode createWorkspaceAppGroupAsso >> <yourlogdir>\dd-WVDHostToHostpoolSpring.log
+      resourceGroupName azureSubscriptionID Drainmode createWorkspaceAppGroupAsso adDomainName domainJoinUPN domainJoinPassword ouPath `
+      >> <yourlogdir>\dd-WVDHostToHostpoolSpring.log
 .DISCLAIMER
     Use at your own risk. This scripts are provided AS IS without warranty of any kind. The author further disclaims all implied
     warranties including, without limitation, any implied warranties of merchantability or of fitness for a particular purpose. The entire risk

@@ -1,32 +1,12 @@
----
-page_type: resources
-languages:
-  - md
-  - powershell
-description: |
-  Windows Virtual Desktop (WVD) - resources and scripts
-products:
-  - azure
-  - windows-virtual-desktop
----
+#  Windows Virtual Desktop related content
+This repository contains Windows Virtual Desktop (WVD) related resources and scripts. You can find ARM Templates, Bicep Tenmplates and PowerShell scripts to automate and manage
+your Windows Virtual Desktop environment.
 
-#  Windows Virtual Desktop (WVD) - resources and scripts
+<img align="right" src="https://1.bp.blogspot.com/-4cExxWC9Wpo/YG71Y14tmLI/AAAAAAAAFMs/bhXFN9oT9_Ew2RTB71kwsZ2lY93bauHeACLcBGAsYHQ/s320/ninja-transparent.png">
 
+##  Descriptions
 
-## Contents
-
-
-| File/folder                         | Description                                                                                    |
-|-------------------------------------|------------------------------------------------------------------------------------------------|
-| `Add-WVDHostToHostpoolSpring.ps1`   | Adds an WVD Session Host to an existing WVD Hostpool                                           |
-| `Add-WVDHostToHostpoolSpringV2.ps1` | Adds an WVD Session Host to an existing WVD Hostpool accepting the registation key as a param  |
-| `Create-MSIXAppAttachContainer.ps1` | Creates an MSIX app attach (vhd) container for a given MSIX application                        |
-| `WVD-Rest-Api-Functions.ps1`        | Contains functions and exmaples to get & create WVD object using REST API                      |
-| `Create-WVD-Backplane.bicep`        | To build the ARM JSON code to create WVD back plane components in Azure                        |
-| `BicepModules`                      | Contains various Bicep Modules to create an WVD environment incl other components              |
-
-
-## Add-WVDHostToHostpoolSpring.ps1
+### Add-WVDHostToHostpoolSpring.ps1
 This script adds an WVD Session Host to an existing WVD Hostpool by performing the following action:
  - Download the WVD agent
  - Download the WVD Boot Loader
@@ -36,7 +16,7 @@ This script adds an WVD Session Host to an existing WVD Hostpool by performing t
  - Create the Workspace <-> App Group Association (optionally)
 The script is designed and optimized to run as PowerShell Extension as part of a JSON deployment.
 
-## Add-WVDHostToHostpoolSpringV2.ps1
+### Add-WVDHostToHostpoolSpringV2.ps1
 Adds an WVD Session Host to an existing WVD Hostpool using a provided registrationKey by performing the following action:
  - Download the WVD agent
  - Download the WVD Boot Loader
@@ -45,7 +25,7 @@ Adds an WVD Session Host to an existing WVD Hostpool using a provided registrati
 The script is designed and optimized to run as PowerShell Extension as part of a JSON deployment.
 V1 of this script generates its own host pool registrationkey, this V2 version accepts the registrationkey as a parameter
 
-## Create-MSIXAppAttachContainer.ps1
+### Create-MSIXAppAttachContainer.ps1
 This script creates an MSIX app attach (vhd) container for a given MSIX file by:
  - Creating a new VHD disk
  - Initializing the disk
@@ -56,7 +36,7 @@ This script creates an MSIX app attach (vhd) container for a given MSIX file by:
  - Output the Volume ID and Package name needed for the Staging step of MSIX app attach
  - Dismount the disk
  
- ## WVD-Rest-Api-Functions.ps1
+ ### WVD-Rest-Api-Functions.ps1
 This script contains the following functions that use REST API for WVD
  - Get-WorkSpace
  - Get-Hostpool
@@ -67,14 +47,14 @@ This script contains the following functions that use REST API for WVD
  - New-AppGroup
  - New-App
  
-  ## Create-WVD-Backplane.bicep
+  ### Create-WVD-Backplane.bicep
 This Azure .bicep file (based on 0.1.1 Alpha Preview release of Project Bicep) generates the ARM Template (JSON) to create:
  - A WVD Workspace
  - A WVD Host pool
  - A WVD App Group
 And connect the AppGroup with the Host pool
 
-## Contributing
+### Contributing
 
 This project welcomes contributions and suggestions.
 
